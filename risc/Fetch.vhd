@@ -18,16 +18,32 @@ use work.all;
 
 Entity Fetch is
 Port(
-	PCIn: in STD_LOGIC_VECTOR(7 downto 0);
+	PC: inout STD_LOGIC_VECTOR(7 downto 0);
 	Instr: out STD_Logic_Vector(3 downto 0);
 		CLK:	in STD_LOGIC;
 		LOAD:   in STD_LOGIC;
-		RESET:  in STD_LOGIC
+		RESET:  in STD_LOGIC;
+		ADDR: in std_logic_vector (7 downto 0);
+		dout1: out STD_LOGIC_VECTOR (23 downto 0)
 );
 End Fetch;
 
 architecture Behavioral of Fetch is
 begin
+U1: entity work.ProgramCounter
+	Port Map
+	(
+		CLK => CLK,
+		RESET => RESET,
+		PC => PC
+	);
+U7: entity work.InstrMem
+	 Port Map
+	 (
+		CLKa=>CLK,
+		Addra=>addr,
+		douta=>dout1
+	);
 	 process(RESET,CLK,Load)
 	 begin	 
 	if clk='1' and clk'event then

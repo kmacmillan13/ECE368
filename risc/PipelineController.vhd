@@ -30,21 +30,16 @@ architecture Structural of PipelineController is
 	signal PC : STD_LOGIC_VECTOR(7 downto 0) := (OTHERS => '0');
 	signal Instr0,Instr1,Instr2,Instr3,Instr4: STD_LOGIC_VECTOR(3 downto 0):=(OTHERS=>'0');
     begin
-	U1: entity work.ProgramCounter
-	Port Map
-	(
-		CLK => CLK,
-		RESET => RESET,
-		PC => PC
-	);
 	U2: entity work.Fetch
 	Port Map
 	(
-		PCIn => PC,
+		PC => PC,
 		CLK => CLK,
 		Instr => Instr0,
 		LOAD => LOAD,
-		RESET => RESET
+		RESET => RESET,
+		ADDR => ADDR,
+		dout1 => dout1
 		
 	);
 		
@@ -76,21 +71,6 @@ architecture Structural of PipelineController is
 		Instr => Instr4
 		
 	);
-	
-
-U7: entity work.InstrMem
-	 Port Map
-	 (
-		CLKa=>CLK,
-		Addra=>addr,
-		douta=>dout1
-	);
-	
-	Instr1 <= Instr0;
-	Instr2 <= Instr1;
-	Instr3 <= Instr2;
-	Instr4 <= Instr3;
-	Instr0 <= Instr4;
 
 	 
 end Structural;
